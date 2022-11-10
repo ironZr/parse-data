@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>=-=</title>
+    <link rel="shortcut icon" href="http://www.ruijiang.top/zrfile/2022-07/0.gif"/>
+</head>
+<body>
+<div id="app">
+    <h2 style="text-align: center">{{title}}</h2>
+    <div class="parent">
+        <img src="img/0.gif">
+        <img src="img/0.gif">
+        <img src="img/0.gif">
+        <img src="img/0.gif">
+        <img src="img/0.gif">
+        <img src="img/0.gif">
+    </div>
+
+    <table style="margin: auto">
+        <tr>
+            <th>编号</th>
+            <th>组名</th>
+            <th>测试名</th>
+        </tr>
+        <tr v-for="(item,index) in items">
+            <td align="center">{{index+1}}</td>
+            <td align="center"><b>{{item.groupName}}</b></td>
+            <td align="center">{{item.name}}</td>
+            <td align="center"><input style="color: lightcoral;height: 35px" type="button" @click="openHtml(index)" value="哒咩！"></td>
+            <td align="center"><input style="color: lightcoral;height: 35px" type="button" @click="formatToJson(index)" value="JSON！"></td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>
+
+<script src="js/vue.js"></script>
+<script src="js/axios.min.js"></script>
+
+<script>
+    const vue = new Vue({
+        el: "#app",
+        data: {
+            title: "=-=在线测试用例=-=",
+            items: [],
+        },
+        methods: {
+            openHtml(index) {
+                window.open("/parseTest/show/"+this.items[index].id, '_blank');
+            },
+            formatToJson(index) {
+                window.open("/parseTest/formatToJson/"+this.items[index].id, '_blank');
+            }
+        },
+        created() {
+            axios.get("/parseTest/list").then((res) => {
+                this.items = res.data.data;
+            }).catch((err) => {
+                alert(err.toString());
+            });
+        },
+    });
+</script>
+
+
+<style>
+    table {
+        width: 100%;
+        height: 100%
+    }
+    .parent {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
